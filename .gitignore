@@ -1,0 +1,4 @@
+.DS_Store
+list.txt
+.*.swp
+node_modules

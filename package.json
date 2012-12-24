@@ -1,0 +1,17 @@
+{
+  "name": "web_photo_scraper",
+  "version": "0.0.1",
+  "private": false,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "coffeescript": "*",
+    "colors": "*",
+    "node.io": "*"
+  },
+  "engines": {
+	  "node": "0.8.x",
+	  "npm": "1.1.x"
+  }
+}
