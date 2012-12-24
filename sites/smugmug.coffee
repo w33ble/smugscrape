@@ -1,10 +1,27 @@
+colors = require 'colors'
+async = require 'async'
 request = require 'request'
 jsdom = require 'jsdom'
 jquery = require 'jquery'
+fs = require 'fs'
 
 jqify = (body) ->
   window = jsdom.jsdom(body).createWindow()
   jquery.create(window)
+
+dlQueue = async.queue(
+  (task, callback) ->
+    console.log "Downloading image: ".rainbow + "#{task.url}".yellow + ' -> '.red + "#{task.filename}".cyan
+    r = request(task.url)
+    p = r.pipe(fs.createWriteStream("./files/#{task.filename}"))
+    # console.log p
+    p.on 'close', ->
+      # console.log 'pipe complete'.magenta
+      callback()
+  4)
+
+dlQueue.drain = ->
+  console.log "Queue is empty".yellow
 
 module.exports = class
 
@@ -56,22 +73,17 @@ module.exports = class
       form: formData
       followAllRedirects: true
       , (err, res, body) =>
-        # console.log r2
         if err || res.statusCode is not 200
-          console.log res
           throw "Login Failed: " + err
         else
-          @setBody body
+          console.log "Login successful!".green
+          # @setBody body
           cb()
 
-  getImagePaths: (url) ->
-    images = []
-    nodes = @$('#thumbnails  div.photo').find('img')
-    for i in nodes
-      console.log 'image found'.cyan
-      console.log @$(i).css('background-image')
-    console.log nodes.length + ' images found'
-    console.log 'did you see stuff?'.bold.magenta
+  getImages: (imgs) ->
+    for i in imgs
+      img = i.replace(/Ti/g, 'X2')
 
-  getPages: ->
-    return false
+      dlQueue.push
+        url: img
+        filename: img.substring(img.lastIndexOf('/')+1);

@@ -7,35 +7,6 @@ jquery = require 'jquery'
 
 job = require './jobs/jay'
 
-fetchImage = (q, options) ->
-  console.log 'fetch images'
-
-siteLogin = (form, r, cb) ->
-  url = form.action
-  if form.action.indexOf('/') is 0
-    url = r.uri.protocol + '//' + r.uri.host + form.action
-
-  request
-    url: url
-    method: 'POST'
-    body: form.data
-    , (err, res, body) ->
-      if err
-        throw "Login Failed: " + err
-      else
-        console.log body
-        cb()
-
-q = async.queue(
-  (task, callback) ->
-    console.log "run task #{task.url}".rainbow
-    console.log q
-    callback()
-  2)
-
-q.drain = ->
-  console.log "Queue is empty".yellow
-
 r = request job.url, (err, res, body) ->
   if err
     console.log err
@@ -52,17 +23,10 @@ r = request job.url, (err, res, body) ->
         (callback) ->
           formData = Site.getLoginForm()
           # request
-          console.log formData
           Site.login(r, callback)
         , (callback) ->
-          # console.log r2.req
-          Site.getImagePaths(job.url)
+          Site.getImages(job.imgs)
           callback()
       ]);
     else
-      Site.getImagePaths(job.url)
-
-    # if job.site.hasLogin($)
-      # enter password, submit form
-
-    # console.log body, res
+      Site.getImages(job.imgs)
