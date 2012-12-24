@@ -81,9 +81,14 @@ module.exports = class
           cb()
 
   getImages: (imgs) ->
+    idx = 0;
+    baseIndex = '000000'
     for i in imgs
+      idx++
       img = i.replace(/Ti/g, 'X2')
+      filename = img.substring(img.lastIndexOf('/')+1)
+      index = baseIndex.substr(0,baseIndex.length-(idx+'').length) + idx;
 
       dlQueue.push
         url: img
-        filename: img.substring(img.lastIndexOf('/')+1);
+        filename: index + '_' + filename

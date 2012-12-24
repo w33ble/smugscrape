@@ -5,7 +5,7 @@ jsdom = require 'jsdom'
 jquery = require 'jquery'
 # sites = require './sites'
 
-job = require './jobs/jay'
+job = require './jobs/FILENAME'
 
 r = request job.url, (err, res, body) ->
   if err
