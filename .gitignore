@@ -2,3 +2,5 @@
 list.txt
 .*.swp
 node_modules
+jobs/*.coffee
+jobs/*.js

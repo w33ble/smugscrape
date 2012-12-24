@@ -6,9 +6,12 @@
     "start": "node app"
   },
   "dependencies": {
-    "coffeescript": "*",
+    "coffee-script": "*",
     "colors": "*",
-    "node.io": "*"
+    "request": "*",
+	"jsdom": "*",
+	"jquery": "*",
+	"async": "*"
   },
   "engines": {
 	  "node": "0.8.x",
